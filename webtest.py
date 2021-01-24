@@ -38,7 +38,7 @@ PrescriptionText.send_keys("1234234534678")
 
 # Pharmacy Information
 pharmacyDropDown = Select(driver.find_element_by_xpath("//*[@id='pharmacy']"))
-pharmacyDropDown.select_by_index(1)
+pharmacyDropDown.select_by_index(2)
 
 # Provider Information
 providerFirstName = driver.find_element_by_xpath("//*[@id='prov_fname']").send_keys(os.getenv("PROVFIRSTNAME"))
@@ -54,4 +54,6 @@ providerStateCode = driver.find_element_by_xpath("//*[@id='prov_state']").send_k
 driver.find_element_by_xpath("//*[@id='prov_zip']").clear()
 providerZip = driver.find_element_by_xpath("//*[@id='prov_zip']").send_keys(os.getenv("ZIP"))
 driver.find_element_by_xpath("//*[@id='prov_phone']").clear()
+providerPhone = driver.find_element_by_xpath("//*[@id='prov_phone']").send_keys(os.getenv("PHONE"))
 driver.find_element_by_xpath("//*[@id='prov_fax']").clear()
+providerFax = driver.find_element_by_xpath("//*[@id='prov_fax']").send_keys(os.getenv("FAX"))
