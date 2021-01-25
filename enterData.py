@@ -5,12 +5,6 @@ from connectSQL import executeScriptsFromFile
 data = executeScriptsFromFile("sqlCommand.sql")
 patientData = executeScriptsFromFile("patient.sql")
 
-PATIENTNAME = []
-for i in patientData:
-    if i[0] not in PATIENTNAME:
-        PATIENTNAME.append(i[0])
-print(PATIENTNAME)
-
 OPTIONS = ["None",
            "Refill",
            "RxChange - Type D (Drug Utilization Review)",
@@ -21,7 +15,15 @@ OPTIONS = ["None",
            "RxChange - Type T (Therapeutic Interchange)",
            "RxChange - Type U (Prescriber Authorization)"]
 
+PATIENTNAME = []
+PATIENTFIRST = []
+PATIENTLAST = []
+for i in patientData:
+    if i[0] not in PATIENTNAME:
+        PATIENTNAME.append(i[0])
+
 PRESCRNUMS = []
+
 MEDICATIONS = []
 
 
@@ -33,7 +35,8 @@ def getMedications(prescnum):
             ndcvalue.set(k[14])
             medqty.set(k[15])
             medInstructions.set(k[16])
-            return meddescription, ndcvalue, medqty, medInstructions
+            return meddescription.get(), ndcvalue.get(), medqty.get(), medInstructions.get()
+
 
 def updatePresc(patid):
     PRESCRNUMS = []
@@ -43,11 +46,10 @@ def updatePresc(patid):
                 PRESCRNUMS.append(j[0])
     prescnum.set(PRESCRNUMS[0])
     prescnum_entry = tk.OptionMenu(content2, prescnum, *PRESCRNUMS).grid(row=0, column=1)
-    getMedications(prescnum.get())
     return PRESCRNUMS, prescnum, prescnum_entry
 
 
-def updatePatient():
+def update_patient():
     pName = patname1.get()
     for i in patientData:
         if pName in i[0]:
@@ -59,19 +61,41 @@ def updatePatient():
             patstate1.set(i[6])
             patzip1.set(i[7])
             patphone1.set(i[8])
+            patfname1.set(i[9])
+            patlname1.set(i[10])
             updatePresc(patid1.get())
-            return patid1.get(), patgender1.get(), patdob1.get(), pataddress1.get(), patcity1.get(), patstate1.get(), patzip1.get(), patphone1.get()
+            return patid1.get(), patgender1.get(), patdob1.get(), pataddress1.get(), patcity1.get(), patstate1.get(), \
+                   patzip1.get(), patphone1.get(), patfname1.get(), patlname1.get()
 
 
 def closeapp():
     window.destroy()
 
 
+def submit_data():
+    pName = patname1.get()
+    pGender = patgender1.get()
+    pDOB = patdob1.get()
+    pAddress = pataddress1.get()
+    pCity = patcity1.get()
+    pState = patstate1.get()
+    pZip = patzip1.get()
+    pPhone = patphone1.get()
+    pPreNum = prescnum.get()
+    pMed = meddescription.get()
+    pNDC = ndcvalue.get()
+    pQty = medqty.get()
+    pInstr = medInstructions.get()
+    pfname = patfname1.get()
+    plname = patlname1.get()
+    return pName, pGender, pDOB, pAddress, pCity, pState, pZip, pPhone, pPreNum, pMed, pNDC, pQty, pInstr, pfname, plname
+
+
 # window
 window = tk.Tk()
 window.title("Enter Data")
 window.resizable(height="true", width="true")
-# window.minsize(height=500, width=500)
+# window.minsize(height=400, width=800)
 window.grid_rowconfigure(0, weight=1)
 window.grid_columnconfigure(0, weight=1)
 
@@ -108,12 +132,16 @@ patname1.set(PATIENTNAME[0])
 patname_entry = tk.OptionMenu(content0, patname1, *PATIENTNAME)
 patname_entry.grid(row=0, column=3, padx=2, pady=2)
 
-update = tk.Button(content0, text="Update Patient Details", font=("calibri", "11"), command=lambda: updatePatient(),
+patfname1 = tk.StringVar(content0)
+
+patlname1 = tk.StringVar(content0)
+
+update = tk.Button(content0, text="Update Patient Details", font=("calibri", "11"), command=lambda: update_patient(),
                    bg="#fff", fg="#4b4f56")
 update.grid(row=0, column=4, padx=10, pady=2)
 
 content1 = tk.Frame(mid_Frame, highlightthickness=1)
-content1.grid(row=1, column=0, pady=5, sticky="nesw")  # Patient
+content1.grid(row=1, column=0, columnspan=2, pady=5, sticky="nesw")  # Patient
 
 patid = tk.Label(content1, text="PatientId:", font=("calibri", "11"), width=15, anchor="w")
 patid.grid(row=0, column=0, padx=5, pady=2)
@@ -164,36 +192,51 @@ patphone_entry = tk.Label(content1, textvariable=patphone1, font=("calibri", "11
 patphone_entry.grid(row=7, column=1)
 
 content2 = tk.Frame(mid_Frame, highlightthickness=1)
-content2.grid(row=1, column=1, pady=5, sticky="nesw")  # Drug
+content2.grid(row=1, column=1, columnspan=2, pady=5, sticky="nesw")  # Drug
 
-prescnumLabel = tk.Label(content2, text="Prescription Number:", font=("calibri", "11"), width=20, pady=2,
-                         anchor="w").grid(row=0, column=0)
+prescnumLabel = tk.Label(content2, text="Prescription Number:", font=("calibri", "11"), width=20,
+                         anchor="w").grid(row=0, column=0, padx=5, pady=2)
 prescnum = tk.StringVar(content2)
-prescnum_entry = tk.OptionMenu(content2, prescnum, value="").grid(row=0, column=1)
+prescnum_entry = tk.OptionMenu(content2, prescnum, value="").grid(row=0, column=1, padx=5, pady=2)
 
-medlabel = tk.Label(content2, text="Medication:", font=("calibri", "11"), width=20, pady=2, anchor="w").grid(row=1,
-                                                                                                             column=0)
+update = tk.Button(content2, text="Update Medication", font=("calibri", "11"),
+                   command=lambda: getMedications(prescnum.get()),
+                   bg="#fff", fg="#4b4f56")
+update.grid(row=1, column=0, padx=5, pady=2)
+
+medlabel = tk.Label(content2, text="Medication:", font=("calibri", "11"), width=20, pady=2, anchor="w").grid(row=2,
+                                                                                                             column=0,
+                                                                                                             padx=5,
+                                                                                                             pady=2)
 meddescription = tk.StringVar(content2)
-meddescription_entry = tk.Label(content2, textvariable=meddescription, font=("calibri", "11")).grid(row=1, column=1)
+meddescription_entry = tk.Label(content2, textvariable=meddescription, font=("calibri", "11"), width=30).grid(row=2,
+                                                                                                              column=1)
 
-ndclabel = tk.Label(content2, text="NDCID:", font=("calibri", "11"), width=20, pady=2, anchor="w").grid(row=2, column=0)
+ndclabel = tk.Label(content2, text="NDCID:", font=("calibri", "11"), width=20, pady=2, anchor="w").grid(row=3, column=0,
+                                                                                                        padx=5, pady=2)
 ndcvalue = tk.StringVar(content2)
-ndcvalue_entry = tk.Label(content2, textvariable=ndcvalue, font=("calibri", "11")).grid(row=2, column=1)
+ndcvalue_entry = tk.Label(content2, textvariable=ndcvalue, font=("calibri", "11"), width=30).grid(row=3, column=1)
 
-qtylabel = tk.Label(content2, text="Quantity:", font=("calibri", "11"), width=20, pady=2, anchor="w").grid(row=3,
-                                                                                                           column=0)
+qtylabel = tk.Label(content2, text="Quantity:", font=("calibri", "11"), width=20, pady=2, anchor="w").grid(row=4,
+                                                                                                           column=0,
+                                                                                                           padx=5,
+                                                                                                           pady=2)
 medqty = tk.StringVar(content2)
-medqty_entry = tk.Label(content2, textvariable=medqty, font=("calibri", "11")).grid(row=3, column=1)
+medqty_entry = tk.Label(content2, textvariable=medqty, font=("calibri", "11"), width=30).grid(row=4, column=1)
 
-instrlabel = tk.Label(content2, text="Instructions:", font=("calibri", "11"), width=20, pady=2, anchor="w").grid(row=4,
-                                                                                                                 column=0)
+instrlabel = tk.Label(content2, text="Instructions:", font=("calibri", "11"), width=20, pady=2, anchor="w").grid(row=5,
+                                                                                                                 column=0,
+                                                                                                                 padx=5,
+                                                                                                                 pady=2)
 medInstructions = tk.StringVar(content2)
-medInstructions_entry = tk.Label(content2, textvariable=medInstructions, font=("calibri", "11")).grid(row=4, column=1)
+medInstructions_entry = tk.Label(content2, textvariable=medInstructions, font=("calibri", "11"), width=30).grid(row=5,
+                                                                                                                column=1)
 
 bottom_Frame = tk.Frame(window, highlightthickness=1)
 bottom_Frame.grid(row=4, column=0, sticky="nesw", pady=10)
 
-submit = tk.Button(bottom_Frame, text="Submit", font=("calibri", "12"), bg="#fff", fg="#4b4f56", width=15)
+submit = tk.Button(bottom_Frame, text="Submit", font=("calibri", "12"), bg="#fff", fg="#4b4f56", width=15,
+                   command=submit_data)
 submit.grid(pady=5, padx=10, row=0, column=1)
 close = tk.Button(bottom_Frame, text="Close", font=("calibri", "12"), bg="#fff", fg="#4b4f56", command=closeapp,
                   width=15)
