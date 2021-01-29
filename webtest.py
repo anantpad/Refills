@@ -102,6 +102,7 @@ instructions = driver.find_element_by_xpath("//*[@id='drug_sig']").send_keys(ins
 
 submit_button = driver.find_elements_by_xpath('//*[@id="sendxml"]')[0]
 submit_button.click()
+time.sleep(3)
 
-# time.sleep(5)
-# driver.close()
+if driver.find_element_by_xpath("//*[@id='post-7463']/div/div/div[2]/div").text == "Successfully validated the message":
+    driver.close()
