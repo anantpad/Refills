@@ -31,7 +31,8 @@ def getMedications(prescnum):
             ndcvalue.set(k[14])
             medqty.set(k[15])
             medInstructions.set(k[16])
-            return meddescription.get(), ndcvalue.get(), medqty.get(), medInstructions.get()
+            clinicaldate.set(k[17])
+            return meddescription.get(), ndcvalue.get(), medqty.get(), medInstructions.get(), clinicaldate.get()
 
 def updatePresc(patid):
     PRESCRNUMS = []
@@ -128,6 +129,7 @@ meddescription = tk.StringVar(mid_Frame2)
 ndcvalue = tk.StringVar(mid_Frame2)
 medqty = tk.StringVar(mid_Frame2)
 medInstructions = tk.StringVar(mid_Frame2)
+clinicaldate = tk.StringVar(mid_Frame2)
 
 heading = tk.Label(top_Frame, text = "Create Pharmacy Messages", font = ("Calibri", "12", "bold"), width = 70,
                    bg = "#15396A", fg = "white")
@@ -220,6 +222,10 @@ instrlabel = tk.Label(mid_Frame2, text = "Instructions:", font = ("calibri", "11
 medInstructions_entry = tk.Label(mid_Frame2, textvariable = medInstructions, font = ("calibri", "11"), width = 15,
                                  wraplength = 100)
 
+clindate = tk.Label(mid_Frame2, text = "Clinical Date:", font = ("calibri", "11"), width = 15, anchor = "w")
+clindate_entry = tk.Label(mid_Frame2, textvariable = clinicaldate, font = ("calibri", "11"), width = 15,
+                          wraplength = 100)
+
 # grid
 blank1.grid(row = 2, column = 2)
 
@@ -231,6 +237,8 @@ qtylabel.grid(row = 4, column = 3, padx = (5, 2), pady = 2)
 medqty_entry.grid(row = 4, column = 4, padx = (5, 2), pady = 2)
 instrlabel.grid(row = 5, column = 3, padx = (5, 2), pady = 2)
 medInstructions_entry.grid(row = 5, column = 4, padx = (5, 2), pady = 2)
+clindate.grid(row = 6, column = 3, padx = (5, 2), pady = 2)
+clindate_entry.grid(row = 6, column = 4, padx = (5, 2), pady = 2)
 
 submit = tk.Button(bottom_Frame, text = "Submit", font = ("calibri", "12", "bold"), bg = "#A4606C", fg = "#ffffff",
                    activebackground = "#b6afaf", activeforeground = "#0d0c0c", width = 10, command = submit_data,

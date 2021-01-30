@@ -1,7 +1,7 @@
 select distinct r.RcopiaIdentifier,p.PTID,m.MID,
         pp.First,pp.last,pp.patientId, pp.Sex,pp.Birthdate,pp.Address1,pp.City,pp.State,pp.Zip,pp.Phone1,
         m.DESCRIPTION,CONCAT(m.NDCLABPROD,m.NDCPACKAGE) as NDCID,
-        p.QUANTITY,m.INSTRUCTIONS from RcopiaMapPrescription r
+        p.QUANTITY,m.INSTRUCTIONS, p.CLINICALDATE from RcopiaMapPrescription r
         JOIN PRESCRIB p on p.PTID = r.CentricityIdentifier
         JOIN MEDICATE m on m.MID = p.MID
         JOIN DDID_RXNORM rx on rx.DDID = m.DDID
