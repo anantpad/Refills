@@ -40,7 +40,8 @@ def updatePresc(patid):
             if j[13] not in PRESCRNUMS:
                 PRESCRNUMS.append(j[13])
     prescnum.set(PRESCRNUMS[0])
-    prescnum_entry = tk.OptionMenu(mid_Frame, prescnum, *PRESCRNUMS).grid(row = 1, column = 3, padx = (5, 15),
+    prescnum_entry = tk.OptionMenu(mid_Frame, prescnum, *PRESCRNUMS).grid(row = 1, column = 2, columnspan = 2,
+                                                                          padx = (5, 5),
                                                                           pady = (2, 6))
     return PRESCRNUMS, prescnum, prescnum_entry
 
@@ -77,8 +78,8 @@ def submit_data():
     pState = patstate1.get()
     pZip = patzip1.get()
     pPhone = patphone1.get()
-    pPreNum = prescnum.get()
-    pMed = meddescription.get()
+    pMed = prescnum.get()
+    pPreNum = meddescription.get()
     pNDC = ndcvalue.get()
     pQty = medqty.get()
     pInstr = medInstructions.get()
@@ -96,12 +97,12 @@ window.grid_rowconfigure(0, weight = 1)
 window.grid_columnconfigure(0, weight = 1)
 
 # topFrame
-top_Frame = tk.Frame(window, bd = 2, bg = "purple")
+top_Frame = tk.Frame(window, bd = 2, bg = "#15396a")
 # midFrame
-mid_Frame = tk.Frame(window, bd = 2, bg = "light green")
-mid_Frame2 = tk.Frame(window, bd = 2, bg = "light green")
+mid_Frame = tk.Frame(window, bd = 2, bg = "#D8BBAA")
+mid_Frame2 = tk.Frame(window, bd = 2, bg = "#D8BBAA")
 # bottomFrame
-bottom_Frame = tk.Frame(window, bd = 2, bg = "purple")
+bottom_Frame = tk.Frame(window, bd = 2, bg = "#15396a")
 
 # grids
 top_Frame.grid(columnspan = 4, padx = 10, pady = 10)
@@ -128,15 +129,15 @@ ndcvalue = tk.StringVar(mid_Frame2)
 medqty = tk.StringVar(mid_Frame2)
 medInstructions = tk.StringVar(mid_Frame2)
 
-heading = tk.Label(top_Frame, text = "Create Pharmacy Messages", font = ("Calibri", "12", "bold"), width = 77,
-                   bg = "green", fg = "white")
+heading = tk.Label(top_Frame, text = "Create Pharmacy Messages", font = ("Calibri", "12", "bold"), width = 70,
+                   bg = "#15396A", fg = "white")
 heading.grid(row = 0, column = 0, rowspan = 1, columnspan = 5)
 
 patname = tk.Label(mid_Frame, text = "Patient Name:", font = ("calibri", "11"), width = 15, anchor = "w", bd = 2)
 patname1.set(PATIENTNAME[0])
 patname_entry = tk.OptionMenu(mid_Frame, patname1, *PATIENTNAME)
 patname_entry.config(width = 15)
-UpdatePatient = tk.Button(mid_Frame, text = "Update Patient", font = ("calibri", "12", "bold"), bg = "green",
+UpdatePatient = tk.Button(mid_Frame, text = "Update Patient", font = ("calibri", "12", "bold"), bg = "#A4606C",
                           fg = "#ffffff",
                           activebackground = "#b6afaf", activeforeground = "#0d0c0c", width = 15,
                           command = lambda: update_patient(),
@@ -146,11 +147,7 @@ mTEntry.set(OPTIONS[1])
 messageTypeEntry = tk.OptionMenu(mid_Frame, mTEntry, *OPTIONS)
 messageTypeEntry.config(width = 15)
 
-# prescnum_entry = tk.OptionMenu(mid_Frame, prescnum, value = "")
-# prescnum_entry.config(width = 15)
-# prescnum_entry.grid(row = 1, column = 3, padx = (5, 15), pady = (2, 6))
-
-UpdatePrescription = tk.Button(mid_Frame, text = "Update Script #", font = ("calibri", "12", "bold"), bg = "green",
+UpdatePrescription = tk.Button(mid_Frame, text = "Update Script #", font = ("calibri", "12", "bold"), bg = "#A4606C",
                                fg = "#ffffff",
                                activebackground = "#b6afaf", activeforeground = "#0d0c0c", width = 15,
                                command = lambda: getMedications(prescnum.get()),
@@ -160,7 +157,7 @@ UpdatePrescription = tk.Button(mid_Frame, text = "Update Script #", font = ("cal
 patname.grid(row = 0, column = 0, padx = (15, 0), pady = (6, 2))
 patname_entry.grid(row = 0, column = 1, padx = (5, 0), pady = (6, 2))
 UpdatePatient.grid(row = 0, column = 2, padx = (5, 0), pady = (6, 2))
-UpdatePrescription.grid(row = 0, column = 3, padx = (5, 15), pady = (6, 2))
+UpdatePrescription.grid(row = 0, column = 4, padx = (5, 15), pady = (6, 2))
 messageType.grid(row = 1, column = 0, padx = (15, 0), pady = (2, 6))
 messageTypeEntry.grid(row = 1, column = 1, padx = (5, 5), pady = (2, 6))
 
@@ -207,9 +204,9 @@ patzip_entry.grid(row = 8, column = 1, padx = (5, 2), pady = 2)
 patphone.grid(row = 9, column = 0, padx = (5, 2), pady = 2)
 patphone_entry.grid(row = 9, column = 1, padx = (5, 2), pady = 2)
 
-blank1 = tk.Label(mid_Frame2, text = "", bg = "light green", width = 5)
+blank1 = tk.Label(mid_Frame2, text = "", bg = "#D8BBAA", width = 5)
 
-medlabel = tk.Label(mid_Frame2, text = "Medication:", font = ("calibri", "11"), width = 15, anchor = "w")
+medlabel = tk.Label(mid_Frame2, text = "Script#:", font = ("calibri", "11"), width = 15, anchor = "w")
 meddescription_entry = tk.Label(mid_Frame2, textvariable = meddescription, font = ("calibri", "11"), width = 15,
                                 wraplength = 100)
 #
@@ -235,14 +232,14 @@ medqty_entry.grid(row = 4, column = 4, padx = (5, 2), pady = 2)
 instrlabel.grid(row = 5, column = 3, padx = (5, 2), pady = 2)
 medInstructions_entry.grid(row = 5, column = 4, padx = (5, 2), pady = 2)
 
-submit = tk.Button(bottom_Frame, text = "Submit", font = ("calibri", "12", "bold"), bg = "green", fg = "#ffffff",
+submit = tk.Button(bottom_Frame, text = "Submit", font = ("calibri", "12", "bold"), bg = "#A4606C", fg = "#ffffff",
                    activebackground = "#b6afaf", activeforeground = "#0d0c0c", width = 10, command = submit_data,
                    anchor = "center")
-close = tk.Button(bottom_Frame, text = "Close", font = ("calibri", "12", "bold"), bg = "green", fg = "#ffffff",
+close = tk.Button(bottom_Frame, text = "Close", font = ("calibri", "12", "bold"), bg = "#A4606C", fg = "#ffffff",
                   activebackground = "#b6afaf", activeforeground = "#0d0c0c", width = 10, command = closeapp,
                   anchor = "center")
 
-submit.grid(row = 0, column = 1, padx = 100, pady = 2, ipadx = 1, ipady = 1)
-close.grid(row = 0, column = 2, padx = 100, pady = 2, ipadx = 1, ipady = 1)
+submit.grid(row = 0, column = 1, padx = 95, pady = 2, ipadx = 1, ipady = 1)
+close.grid(row = 0, column = 2, padx = 95, pady = 2, ipadx = 1, ipady = 1)
 
 window.mainloop()
