@@ -40,10 +40,12 @@ def updatePresc(patid):
         if str(patid) in j[5]:
             if j[13] not in PRESCRNUMS:
                 PRESCRNUMS.append(j[13])
-    prescnum.set(PRESCRNUMS[0])
-    prescnum_entry = tk.OptionMenu(mid_Frame, prescnum, *PRESCRNUMS).grid(row = 1, column = 2, columnspan = 2,
-                                                                          padx = (5, 5),
-                                                                          pady = (2, 6))
+    prescnum.set("Select One")
+    prescnum_entry = tk.OptionMenu(mid_Frame, prescnum, *PRESCRNUMS,
+                                   command = lambda x: getMedications(prescnum.get())).grid(row = 1, column = 1,
+                                                                                            columnspan = 2,
+                                                                                            padx = (15, 5),
+                                                                                            pady = (2, 6))
     return PRESCRNUMS, prescnum, prescnum_entry
 
 
@@ -135,33 +137,32 @@ heading = tk.Label(top_Frame, text = "Create Pharmacy Messages", font = ("Calibr
                    bg = "#15396A", fg = "white")
 heading.grid(row = 0, column = 0, rowspan = 1, columnspan = 5)
 
-patname = tk.Label(mid_Frame, text = "Patient Name:", font = ("calibri", "11"), width = 15, anchor = "w", bd = 2)
-patname1.set(PATIENTNAME[0])
-patname_entry = tk.OptionMenu(mid_Frame, patname1, *PATIENTNAME)
+# patname = tk.Label(mid_Frame, text = "Patient Name:", font = ("calibri", "11"), width = 15, anchor = "w", bd = 2)
+patname1.set("Select Patient")
+patname_entry = tk.OptionMenu(mid_Frame, patname1, *PATIENTNAME,
+                              command = lambda x: update_patient())
 patname_entry.config(width = 15)
-UpdatePatient = tk.Button(mid_Frame, text = "Update Patient", font = ("calibri", "12", "bold"), bg = "#A4606C",
-                          fg = "#ffffff",
-                          activebackground = "#b6afaf", activeforeground = "#0d0c0c", width = 15,
-                          command = lambda: update_patient(),
-                          anchor = "center")
-messageType = tk.Label(mid_Frame, text = "Message Type:", bd = 2, font = ("calibri", "11"), width = 15, anchor = "w")
+# UpdatePatient = tk.Button(mid_Frame, text = "Update Patient", font = ("calibri", "12", "bold"), bg = "#A4606C",
+#                           fg = "#ffffff",
+#                           activebackground = "#b6afaf", activeforeground = "#0d0c0c", width = 15,
+#                           anchor = "center")
+# messageType = tk.Label(mid_Frame, text = "Message Type:", bd = 2, font = ("calibri", "11"), width = 15, anchor = "w")
 mTEntry.set(OPTIONS[1])
 messageTypeEntry = tk.OptionMenu(mid_Frame, mTEntry, *OPTIONS)
 messageTypeEntry.config(width = 15)
 
-UpdatePrescription = tk.Button(mid_Frame, text = "Update Script #", font = ("calibri", "12", "bold"), bg = "#A4606C",
-                               fg = "#ffffff",
-                               activebackground = "#b6afaf", activeforeground = "#0d0c0c", width = 15,
-                               command = lambda: getMedications(prescnum.get()),
-                               anchor = "center")
+# UpdatePrescription = tk.Button(mid_Frame, text = "Update Script #", font = ("calibri", "12", "bold"), bg = "#A4606C",
+#                                fg = "#ffffff",
+#                                activebackground = "#b6afaf", activeforeground = "#0d0c0c", width = 15,
+#                                anchor = "center")
 
 # grid
-patname.grid(row = 0, column = 0, padx = (15, 0), pady = (6, 2))
-patname_entry.grid(row = 0, column = 1, padx = (5, 0), pady = (6, 2))
-UpdatePatient.grid(row = 0, column = 2, padx = (5, 0), pady = (6, 2))
-UpdatePrescription.grid(row = 0, column = 4, padx = (5, 15), pady = (6, 2))
-messageType.grid(row = 1, column = 0, padx = (15, 0), pady = (2, 6))
-messageTypeEntry.grid(row = 1, column = 1, padx = (5, 5), pady = (2, 6))
+# patname.grid(row = 0, column = 0, padx = (15, 0), pady = (6, 2))
+patname_entry.grid(row = 1, column = 0, padx = (5, 15), pady = (2, 6))
+# UpdatePatient.grid(row = 0, column = 2, padx = (5, 0), pady = (6, 2))
+# UpdatePrescription.grid(row = 0, column = 4, padx = (5, 15), pady = (6, 2))
+# messageType.grid(row = 0, column = 2, padx = (5, 0), pady = (6, 2))
+messageTypeEntry.grid(row = 0, column = 0, padx = (5, 15), pady = (6, 2))
 
 patid = tk.Label(mid_Frame2, text = "PatientId:", font = ("calibri", "11"), width = 15, anchor = "w")
 patid_entry = tk.Label(mid_Frame2, textvariable = patid1, font = ("calibri", "11"), width = 15, anchor = "w")
