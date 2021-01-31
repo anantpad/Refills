@@ -40,7 +40,7 @@ def updatePresc(patid):
         if str(patid) in j[5]:
             if j[13] not in PRESCRNUMS:
                 PRESCRNUMS.append(j[13])
-    prescnum.set("Select One")
+    prescnum.set("Select Medication")
     prescnum_entry = tk.OptionMenu(mid_Frame, prescnum, *PRESCRNUMS,
                                    command = lambda x: getMedications(prescnum.get())).grid(row = 1, column = 1,
                                                                                             columnspan = 2,
